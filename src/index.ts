@@ -1,7 +1,14 @@
+#!/usr/bin/env node
+
 import walk from './utils/walk'
+import {Command} from 'commander'
+import {linkCommand} from './commands/link'
+import {unlinkCommand} from './commands/unlink'
 
-const collection: string[] = []
+const program = new Command()
 
-walk('/home/sup/Projects/wost', ['node_modules', '.git'], collection.push.bind(collection))
+program
+    .addCommand(linkCommand)
+    .addCommand(unlinkCommand)
 
-console.log(collection)
+program.parse(process.argv)

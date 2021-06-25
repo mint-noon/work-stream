@@ -18,6 +18,7 @@ specifiers:
   fs-extra: ^10.0.0
   husky: ^6.0.0
   jest: ^27.0.5
+  jsonschema: ^1.4.0
   lint-staged: ^11.0.0
   lodash: ^4.17.21
   memfs: ^3.2.2
@@ -31,6 +32,7 @@ dependencies:
   chokidar: 3.5.2
   commander: 8.0.0
   fs-extra: 10.0.0
+  jsonschema: 1.4.0
   lodash: 4.17.21
   shelljs: 0.8.4
 
@@ -2951,6 +2953,10 @@ packages:
       universalify: 2.0.0
     optionalDependencies:
       graceful-fs: 4.2.6
+    dev: false
+
+  /jsonschema/1.4.0:
+    resolution: {integrity: sha512-/YgW6pRMr6M7C+4o8kS+B/2myEpHCrxO4PEWnqJNBFMjn7EWXqlQ4tGwL6xTHeRplwuZmcAncdvfOad1nT2yMw==}
     dev: false
 
   /kleur/3.0.3:

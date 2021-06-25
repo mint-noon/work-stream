@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node esbuild.config.js",
     "dev": "ts-node-dev --debug --respawn src/index.ts",
+    "lint:fix": "eslint --debug src/ --fix",
     "test": "jest"
   },
   "repository": {
@@ -19,6 +20,17 @@
     "url": "https://github.com/mint-noon/wost/issues"
   },
   "homepage": "https://github.com/mint-noon/wost#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "pnpm run lint:fix",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@types/fs-extra": "^9.0.11",
     "@types/jest": "^26.0.23",
@@ -44,6 +56,7 @@
     "chokidar": "^3.5.2",
     "commander": "^8.0.0",
     "fs-extra": "^10.0.0",
+    "jsonschema": "^1.4.0",
     "lodash": "^4.17.21",
     "shelljs": "^0.8.4"
   }
