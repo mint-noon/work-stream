@@ -7,9 +7,11 @@ import chalk from 'chalk'
 import {Command} from 'commander'
 import walk from '../utils/walk'
 import getConfig from '../utils/get-config'
+import getIgnore from '../utils/get-ignore'
 import {err, info} from '../utils/log'
 
 const config = getConfig()
+const ignore = getIgnore()
 
 const link = (src: string, dst: string, exclude: string[]): void => {
     walk(src, exclude, (path: string) => {
@@ -36,7 +38,7 @@ linkCommand
                 throw new Error(`Path is not exist: ${dst}`)
             }
 
-            link(src, dst, config.exclude)
+            link(src, dst, ignore)
 
         } catch (error) {
             err(error.message)
