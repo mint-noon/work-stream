@@ -9,6 +9,7 @@ import path from 'path'
 import { Command } from 'commander'
 import {
     log,
+    useGit,
     collect,
     getConfig,
     getIgnore,
@@ -19,6 +20,9 @@ const ignore = getIgnore()
 
 export const sync = () => {
    const dstCollection = collect(config.dst, ignore)
+   const {commit, push} = useGit()
+
+   commit()
 
    for (const file of dstCollection) {
         const srcPath = path.join(config.src, file)
@@ -32,10 +36,12 @@ export const sync = () => {
             writeFileSync(srcPath, readFileSync(dstPath))
         }
     }
+
+    push()
 }
 
 export default new Command('sync')
     .option('-W, --watch')
     .action((options) => {
-        log.info(options.watch)
+        sync()
     })
