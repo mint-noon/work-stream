@@ -3,6 +3,7 @@ import {
     log,
     mirror,
     useGit,
+    minToMs,
     getConfig,
     getIgnore,
 } from '../utils'
@@ -23,7 +24,7 @@ export const sync = ({
 
     if (watch) {
         log.info('Watch...')
-        delay = +delay * 60 * 1000
+        delay = minToMs(+delay)
 
         setInterval(() => {
             mirror(config.src, config.dst, ignore)

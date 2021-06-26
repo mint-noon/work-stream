@@ -9,7 +9,7 @@ import {
     getConfig,
 } from '../utils'
 
-const config = getConfig()
+const { dst }= getConfig()
 
 export const unlink = (target: string) => {
     const files = readdirSync(target)
@@ -24,7 +24,7 @@ export default new Command('unlink')
     .version('0.1.0')
     .action(() => {
         try {
-            unlink(config.dst)
+            unlink(dst)
         } catch (error) {
             log.err(error.message)
         }

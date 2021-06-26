@@ -6,13 +6,16 @@ export const err = (...text: unknown[]) => {
 }
 
 export const info =(...text: unknown[]) => {
-    process.stdout.write(chalk.blue(...text, '\n'))
+    process.stderr.write(chalk.stderr.blue.bgWhite('INFO:'))
+    process.stdout.write(chalk.blue(' ', ...text, '\n'))
 }
 
 export const success = (...text: unknown[]) => {
-    process.stdout.write(chalk.green(...text, '\n'))
+    process.stderr.write(chalk.stderr.green.bgWhite('OK:'))
+    process.stdout.write(chalk.green(' ', ...text, '\n'))
 }
 
 export const warn = (...text: unknown[]) => {
-    process.stdout.write(chalk.yellow(...text, '\n'))
+    process.stderr.write(chalk.stderr.yellow.bgWhite('WARN:'))
+    process.stdout.write(chalk.yellow(' ', ...text, '\n'))
 }
