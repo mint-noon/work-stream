@@ -20,6 +20,7 @@ export const defaultConfig: Config = {
         '.git',
         '.gitignore',
         'node_modules',
+        '.wsignore'
     ]
 }
 
@@ -47,7 +48,7 @@ const configSchema: Schema = {
 const getConfig = (): Config => {
     if (!existsSync(CONFIG_FILE_PATH)) {
         ensureFileSync(CONFIG_FILE_PATH)
-        writeJsonSync(CONFIG_FILE_PATH, defaultConfig)
+        writeJsonSync(CONFIG_FILE_PATH, defaultConfig, {spaces: 2})
         warn(`Default config file created in: ${CONFIG_FILE_PATH}`)
     }
 
