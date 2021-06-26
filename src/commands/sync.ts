@@ -1,47 +1,43 @@
-import {
-    ensureLinkSync,
-    readFileSync,
-    statSync,
-    unlinkSync,
-    writeFileSync,
-} from 'fs-extra'
-import path from 'path'
 import { Command } from 'commander'
 import {
     log,
+    mirror,
     useGit,
-    collect,
     getConfig,
     getIgnore,
 } from '../utils'
+import type {WatchOptions} from '../types'
 
 const config = getConfig()
 const ignore = getIgnore()
 
-export const sync = () => {
-   const dstCollection = collect(config.dst, ignore)
-   const {commit, push} = useGit()
+export const sync = ({
+    watch = false,
+    delay = 2,
+}: WatchOptions) => {
+    const {commit, push} = useGit()
 
-   commit()
-
-   for (const file of dstCollection) {
-        const srcPath = path.join(config.src, file)
-        const dstPath = path.join(config.dst, file)
-
-        if (statSync(srcPath).mtimeMs > statSync(dstPath).mtimeMs) {
-            unlinkSync(dstPath)
-            ensureLinkSync(srcPath, dstPath)
-        }
-        if (statSync(srcPath).mtimeMs < statSync(dstPath).mtimeMs) {
-            writeFileSync(srcPath, readFileSync(dstPath))
-        }
-    }
-
+    commit()
+    mirror(config.src, config.dst, ignore)
     push()
+
+    if (watch) {
+        log.info('Watch...')
+        delay = +delay * 60 * 1000
+
+        setInterval(() => {
+            mirror(config.src, config.dst, ignore)
+            commit()
+            push()
+            log.info('Watch...')
+        }, delay)
+    }
 }
 
 export default new Command('sync')
-    .option('-W, --watch')
+    .version('0.1.0')
+    .option('-w, --watch', '')
+    .option('-d, --delay <minutes>', '')
     .action((options) => {
-        sync()
+        sync(options)
     })

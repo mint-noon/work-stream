@@ -21,7 +21,7 @@ export default (): UseGit => {
     shell.cd(config.dst)
 
     if (shell.exec('git rev-parse --is-inside-work-tree').code !== 0) {
-        log.err('bla-bla-bla')
+        log.err(`Shared directory must be a git repository: ${config.dst}`)
     }
 
     shell.exec('git checkout master')
@@ -42,6 +42,7 @@ export default (): UseGit => {
         shell.exec('git checkout master')
         shell.exec(`git merge -Xtheirs ${HOSTNAME}`)
         shell.exec('git push')
+        shell.exec(`git checkout ${HOSTNAME}`)
     }
 
     return { commit, push }
