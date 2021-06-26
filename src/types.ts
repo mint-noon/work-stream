@@ -5,3 +5,8 @@ export type Config = {
     dst: string;
     exclude: string[];
 }
+
+export type WatchOptions = {
+    watch?: boolean;
+    delay?: number;
+}
