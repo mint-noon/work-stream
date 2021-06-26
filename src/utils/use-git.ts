@@ -32,6 +32,8 @@ export default (): UseGit => {
         log.warn(`Create branch for this machine with name '${HOSTNAME}'`)
     }
 
+    shell.exec('git merge -Xtheirs master')
+
     const commit = () => {
         shell.exec(`git checkout ${HOSTNAME}`)
         shell.exec('git add --all')
