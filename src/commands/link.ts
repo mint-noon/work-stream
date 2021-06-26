@@ -2,26 +2,25 @@ import {
     existsSync,
     ensureLinkSync,
 } from 'fs-extra'
-import path from 'path'
-import chalk from 'chalk'
 import {Command} from 'commander'
-import walk from '../utils/walk'
-import getConfig from '../utils/get-config'
-import getIgnore from '../utils/get-ignore'
-import {err, info} from '../utils/log'
+import {
+    walk,
+    getConfig,
+    getIgnore,
+    checkPath,
+    log,
+} from '../utils'
 
 const config = getConfig()
 const ignore = getIgnore()
 
-const link = (src: string, dst: string, exclude: string[]): void => {
+export const link = (src: string, dst: string, exclude: string[]): void => {
     walk(src, exclude, (path: string) => {
         ensureLinkSync(path, path.replace(src, dst))
     })
 }
 
-export const linkCommand = new Command('link')
-
-linkCommand
+export default new Command('link')
     .version('0.1.0')
     .argument('[src]', '')
     .argument('[dst]', '')
@@ -30,19 +29,11 @@ linkCommand
         if (!dst) dst = config.dst
 
         try {
-            if (!existsSync(src)) {
-                throw new Error(`Path is not exist: ${src}`)
+            if (checkPath(src, dst)) {
+                link(src, dst, ignore)
             }
-
-            if (!existsSync(dst)) {
-                throw new Error(`Path is not exist: ${dst}`)
-            }
-
-            link(src, dst, ignore)
 
         } catch (error) {
-            err(error.message)
+            log.err(error.message)
         }
     })
-
-export default link

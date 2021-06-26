@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
-import walk from './utils/walk'
-import {Command} from 'commander'
-import {linkCommand} from './commands/link'
-import {unlinkCommand} from './commands/unlink'
+import { Command } from 'commander'
+import link from './commands/link'
+import unlink from './commands/unlink'
+import sync from './commands/sync'
 
 const program = new Command()
 
 program
-    .addCommand(linkCommand)
-    .addCommand(unlinkCommand)
+    .addCommand(link)
+    .addCommand(unlink)
+    .addCommand(sync)
 
 program.parse(process.argv)
