@@ -1,0 +1,73 @@
+{
+    "name": "@mint-noon/wost",
+    "version": "0.1.0",
+    "description": "CLI tool to sync your work files between machines and always have up-to-date content",
+    "main": "src/index.ts",
+    "bin": {
+        "@mint-noon/wost": "bin/wost.js",
+        "wost": "bin/wost.js"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "rm -rf ./lib/ && tsc -p tsconfig-build.json && typedoc src/index.ts",
+        "dev": "ts-node src/index.ts",
+        "lint:fix": "eslint --debug src/ --fix",
+        "test": "jest"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mint-noon/wost.git"
+    },
+    "keywords": [
+        "cli",
+        "git",
+        "share",
+        "project"
+    ],
+    "author": "Pavel Danilov",
+    "license": "GPL-3.0",
+    "bugs": {
+        "url": "https://github.com/mint-noon/wost/issues"
+    },
+    "homepage": "https://github.com/mint-noon/wost#readme",
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.ts": [
+            "pnpm run lint:fix",
+            "git add"
+        ]
+    },
+    "dependencies": {
+        "chalk": "^4.1.1",
+        "commander": "^8.0.0",
+        "esm": "^3.2.25",
+        "fs-extra": "^10.0.0",
+        "jsonschema": "^1.4.0",
+        "lodash": "^4.17.21",
+        "shelljs": "^0.8.4"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^9.0.11",
+        "@types/jest": "^26.0.23",
+        "@types/lodash": "^4.14.170",
+        "@types/node": "^15.12.4",
+        "@types/shelljs": "^0.8.8",
+        "@typescript-eslint/eslint-plugin": "^4.28.0",
+        "@typescript-eslint/parser": "^4.28.0",
+        "eslint": "^7.12.1",
+        "husky": "^6.0.0",
+        "jest": "^27.0.5",
+        "lint-staged": "^11.0.0",
+        "memfs": "^3.2.2",
+        "ts-jest": "^27.0.3",
+        "ts-node": "^10.0.0",
+        "typedoc": "^0.21.2",
+        "typescript": "^4.3.4"
+    }
+}

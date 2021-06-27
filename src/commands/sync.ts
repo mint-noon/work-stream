@@ -1,43 +1,43 @@
-import { Command } from 'commander'
+import { Command } from 'commander';
 import {
     log,
     mirror,
     useGit,
+    minToMs,
     getConfig,
     getIgnore,
-} from '../utils'
-import type {WatchOptions} from '../types'
+} from '../utils';
+import type {WatchOptions} from '../types';
 
-const config = getConfig()
-const ignore = getIgnore()
+const config = getConfig();
+const ignore = getIgnore();
 
 export const sync = ({
     watch = false,
     delay = 2,
 }: WatchOptions) => {
-    const {commit, push} = useGit()
+    const {commit, push} = useGit();
 
-    commit()
-    mirror(config.src, config.dst, ignore)
-    push()
+    commit();
+    mirror(config.src, config.dst, ignore);
+    push();
 
     if (watch) {
-        log.info('Watch...')
-        delay = +delay * 60 * 1000
+        log.info('Watch...');
+        delay = minToMs(+delay);
 
         setInterval(() => {
-            mirror(config.src, config.dst, ignore)
-            commit()
-            push()
-            log.info('Watch...')
-        }, delay)
+            mirror(config.src, config.dst, ignore);
+            commit();
+            push();
+            log.info('Watch...');
+        }, delay);
     }
-}
+};
 
 export default new Command('sync')
-    .version('0.1.0')
     .option('-w, --watch', '')
     .option('-d, --delay <minutes>', '')
     .action((options) => {
-        sync(options)
-    })
+        sync(options);
+    });
