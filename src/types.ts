@@ -11,3 +11,7 @@ export type WatchOptions = {
     watch?: boolean;
     delay?: number;
 }
+
+export type ConfigWriterProps = Partial<Omit<Config, 'exclude'>>
+
+export type ConfigWriterPropsKeys = keyof ConfigWriterProps

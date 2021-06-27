@@ -15,7 +15,7 @@ const ignore = getIgnore();
 export const sync = ({
     watch = false,
     delay = 2,
-}: WatchOptions) => {
+}: WatchOptions): void => {
     const {commit, push} = useGit();
 
     commit();
