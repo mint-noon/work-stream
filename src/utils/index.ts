@@ -6,5 +6,6 @@ export { default as getIgnore } from './get-ignore';
 export { default as useGit } from './use-git';
 export { default as mirror } from './mirror';
 export { default as minToMs } from './min-to-ms';
+export { default as writeConfig } from './write-config';
 export * as log from './log';
 export { default as walk } from './walk';

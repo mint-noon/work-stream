@@ -16,7 +16,7 @@ import collect from './collect';
  * @param {string} dst - directory mirror
  * @param {string} ignore - file to be excluded
  */
-const mirror = (src: string, dst: string, ignore: string[]) => {
+const mirror = (src: string, dst: string, ignore: string[]): void => {
     const dstCollection = collect(dst, ignore);
 
     for (const file of dstCollection) {
