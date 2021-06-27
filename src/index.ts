@@ -9,14 +9,14 @@ import pkg from '../package.json';
 
 const program = new Command();
 
-// export const main = (argv: string[]): void => {
-program
-    .version(pkg.version)
-    .addCommand(linkCommand)
-    .addCommand(unlinkCommand)
-    .addCommand(syncCommand)
-    .addCommand(configCommand);
+export const main = (argv: string[]): void => {
+    program
+        .version(pkg.version)
+        .addCommand(linkCommand)
+        .addCommand(unlinkCommand)
+        .addCommand(syncCommand)
+        .addCommand(configCommand);
 
-program.parse(process.argv);
+    program.parse(argv);
 
-// };
+};
