@@ -21,7 +21,6 @@ export const unlink = (target: string) => {
 }
 
 export default new Command('unlink')
-    .version('0.1.0')
     .action(() => {
         try {
             unlink(dst)

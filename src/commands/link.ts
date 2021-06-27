@@ -25,7 +25,6 @@ export const link = (src: string, dst: string, exclude: string[]): void => {
 }
 
 export default new Command('link')
-    .version('0.1.0')
     .action(() => {
         try {
             if (checkPath(src, dst)) {

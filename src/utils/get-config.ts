@@ -1,21 +1,21 @@
-import path from 'path'
+import { join } from 'path'
 import {
     existsSync,
     readJsonSync,
     writeJsonSync,
     ensureFileSync,
 } from 'fs-extra'
-import {Schema, validate} from 'jsonschema'
-import {warn} from '../utils/log'
-import type {Config} from '../types'
+import { Schema, validate } from 'jsonschema'
+import { warn } from '../utils/log'
+import type { Config } from '../types'
 import {
     HOME_DIR,
     CONFIG_FILE_PATH,
 } from '../constants'
 
 export const defaultConfig: Config = {
-    src: path.join(HOME_DIR, 'Projects'),
-    dst: path.join(HOME_DIR, 'WorkStream'),
+    src: join(HOME_DIR, 'Projects'),
+    dst: join(HOME_DIR, 'WorkStream'),
     exclude: [
         '.git',
         '.gitignore',

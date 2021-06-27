@@ -36,7 +36,6 @@ export const sync = ({
 }
 
 export default new Command('sync')
-    .version('0.1.0')
     .option('-w, --watch', '')
     .option('-d, --delay <minutes>', '')
     .action((options) => {

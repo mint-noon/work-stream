@@ -3,7 +3,7 @@ import {
     existsSync,
     readdirSync,
 } from 'fs-extra'
-import path from 'path'
+import { join } from 'path'
 import diff from 'lodash/difference'
 
 import {err} from './log'
@@ -17,7 +17,7 @@ const walk = (src: string, exclude: Exclude, fn: (path: string) => void): void =
     const validFiles = diff(readdirSync(src), exclude)
 
     for (const file of validFiles) {
-        const absolutePath = path.join(src, file)
+        const absolutePath = join(src, file)
         const stat = statSync(absolutePath)
 
         if (stat.isDirectory()) {

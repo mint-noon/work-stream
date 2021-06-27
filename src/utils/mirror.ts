@@ -4,10 +4,9 @@ import {
     readFileSync,
     writeFileSync,
     ensureLinkSync,
-    removeSync,
     existsSync,
 } from 'fs-extra'
-import path from 'path'
+import { join } from 'path'
 import collect from './collect'
 
 /**
@@ -21,8 +20,8 @@ const mirror = (src: string, dst: string, ignore: string[]) => {
     const dstCollection = collect(dst, ignore)
 
     for (const file of dstCollection) {
-        const srcPath = path.join(src, file)
-        const dstPath = path.join(dst, file)
+        const srcPath = join(src, file)
+        const dstPath = join(dst, file)
 
         if (!existsSync(srcPath)) {
             writeFileSync(srcPath, readFileSync(dstPath))
