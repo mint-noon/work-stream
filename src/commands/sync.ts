@@ -12,14 +12,19 @@ import type {WatchOptions} from '../types';
 const config = getConfig();
 const ignore = getIgnore();
 
+/**
+ *
+ *
+ * @param {WatchOptions} options -
+ */
 export const sync = ({
     watch = false,
     delay = 2,
 }: WatchOptions): void => {
     const {commit, push} = useGit();
 
-    commit();
     mirror(config.src, config.dst, ignore);
+    commit();
     push();
 
     if (watch) {
