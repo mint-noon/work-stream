@@ -1,28 +1,30 @@
-import { join } from 'path'
+import { join } from 'path';
 import {
     existsSync,
     readJsonSync,
     writeJsonSync,
     ensureFileSync,
-} from 'fs-extra'
-import { Schema, validate } from 'jsonschema'
-import { warn } from '../utils/log'
-import type { Config } from '../types'
+} from 'fs-extra';
+import { Schema, validate } from 'jsonschema';
+import { warn } from '../utils/log';
+import type { Config } from '../types';
 import {
     HOME_DIR,
+    HOSTNAME,
     CONFIG_FILE_PATH,
-} from '../constants'
+} from '../constants';
 
 export const defaultConfig: Config = {
     src: join(HOME_DIR, 'Projects'),
     dst: join(HOME_DIR, 'WorkStream'),
+    workBranchName: HOSTNAME,
     exclude: [
         '.git',
         '.gitignore',
         'node_modules',
         '.wsignore'
     ]
-}
+};
 
 const configSchema: Schema = {
     id: '/Config',
@@ -43,23 +45,23 @@ const configSchema: Schema = {
         },
     },
     required: ['src', 'dst', 'exclude'],
-}
+};
 
 const getConfig = (): Config => {
     if (!existsSync(CONFIG_FILE_PATH)) {
-        ensureFileSync(CONFIG_FILE_PATH)
-        writeJsonSync(CONFIG_FILE_PATH, defaultConfig, {spaces: 2})
-        warn(`Default config file created in: ${CONFIG_FILE_PATH}`)
+        ensureFileSync(CONFIG_FILE_PATH);
+        writeJsonSync(CONFIG_FILE_PATH, defaultConfig, {spaces: 2});
+        warn(`Default config file created in: ${CONFIG_FILE_PATH}`);
     }
 
-    const config = readJsonSync(CONFIG_FILE_PATH)
+    const config = readJsonSync(CONFIG_FILE_PATH);
 
     if (validate(config, configSchema)) {
-        return config
+        return config;
     }
-    warn('Config file is wrong, use default')
+    warn('Config file is wrong, use default');
 
-    return defaultConfig
-}
+    return defaultConfig;
+};
 
-export default getConfig
+export default getConfig;

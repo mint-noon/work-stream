@@ -1,12 +1,18 @@
 {
-  "name": "wost",
+  "name": "@mint-noon/wost",
   "version": "0.1.0",
-  "description": "",
-  "main": "lib/wost.js",
-  "type": "module",
+  "description": "CLI tool to sync your work files between machines and always have up-to-date content",
+  "main": "src/index.ts",
+  "bin": {
+    "@mint-noon/wost": "bin/wost.js",
+    "wost": "bin/wost.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "build": "rollup --config rollup.config.js",
-    "start": "ts-node-dev --debug src/index.ts",
+    "build": "rm -rf ./lib/ && tsc -p tsconfig-build.json && typedoc src/index.ts",
+    "dev": "ts-node src/index.ts",
     "lint:fix": "eslint --debug src/ --fix",
     "test": "jest"
   },
@@ -14,9 +20,14 @@
     "type": "git",
     "url": "git+https://github.com/mint-noon/wost.git"
   },
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "git",
+    "share",
+    "project"
+  ],
   "author": "Pavel Danilov",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/mint-noon/wost/issues"
   },
@@ -35,35 +46,28 @@
   "dependencies": {
     "chalk": "^4.1.1",
     "commander": "^8.0.0",
+    "esm": "^3.2.25",
     "fs-extra": "^10.0.0",
     "jsonschema": "^1.4.0",
     "lodash": "^4.17.21",
-    "rollup-plugin-terser": "^7.0.2",
     "shelljs": "^0.8.4"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^19.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/fs-extra": "^9.0.11",
     "@types/jest": "^26.0.23",
     "@types/lodash": "^4.14.170",
     "@types/node": "^15.12.4",
     "@types/shelljs": "^0.8.8",
     "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
     "eslint": "^7.12.1",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
     "husky": "^6.0.0",
     "jest": "^27.0.5",
     "lint-staged": "^11.0.0",
     "memfs": "^3.2.2",
-    "rollup": "^2.52.3",
-    "rollup-plugin-typescript2": "^0.30.0",
     "ts-jest": "^27.0.3",
-    "ts-node-dev": "^1.1.6",
+    "ts-node": "^10.0.0",
+    "typedoc": "^0.21.2",
     "typescript": "^4.3.4"
   }
 }
