@@ -1,10 +1,7 @@
 import {
     statSync,
-    unlinkSync,
     readFileSync,
     writeFileSync,
-    ensureLinkSync,
-    existsSync,
 } from 'fs-extra';
 import { join } from 'path';
 import collect from './collect';
@@ -23,10 +20,6 @@ const mirror = (src: string, dst: string, ignore: string[]): void => {
         const srcPath = join(src, file);
         const dstPath = join(dst, file);
 
-        if (!existsSync(srcPath)) {
-            writeFileSync(srcPath, readFileSync(dstPath));
-        }
-
         const srcStat = statSync(srcPath);
         const dstStat = statSync(dstPath);
 
@@ -34,8 +27,7 @@ const mirror = (src: string, dst: string, ignore: string[]): void => {
             writeFileSync(srcPath, readFileSync(dstPath));
         }
         if (srcStat.mtimeMs > dstStat.mtimeMs) {
-            unlinkSync(dstPath);
-            ensureLinkSync(srcPath, dstPath);
+            writeFileSync(dstPath, readFileSync(srcPath));
         }
     }
 };

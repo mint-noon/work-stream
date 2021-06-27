@@ -6,6 +6,7 @@ import {
 } from '../utils';
 
 export default new Command('config')
+    .description('Call without flags to see your config file')
     .option('-s, --src <target>', 'Absolute path to source directory')
     .option('-d, --dst <target>', 'Absolute path to destination directory')
     .option('-b, --branch <name>', 'Name for this machine working branch')
