@@ -59,77 +59,78 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h1>Usage</h1>
+					<h1><strong>Usage</strong></h1>
 				</a>
-				<a href="#wost-link" id="wost-link" style="color: inherit; text-decoration: none;">
-					<h3><code>wost link</code></h3>
+				<a href="#sync-options" id="sync-options" style="color: inherit; text-decoration: none;">
+					<h2>sync <code>[OPTIONS]</code></h2>
 				</a>
+				<pre><code class="language-sh"><span style="color: #000000">  $ wost sync </span><span style="color: #008000"># Sync shared dir with origin and write changes to work files</span>
+<span style="color: #000000">  $ wost sync -w -d 20 </span><span style="color: #008000"># Repeat sync each 20 seconds</span>
+
+<span style="color: #000000">    Options:</span>
+
+<span style="color: #000000">      -w, --watch - Watch changes and sync state after delay</span>
+<span style="color: #000000">      -d, --delay &lt;seconds&gt; - Default value is 120. Set sync delay </span><span style="color: #AF00DB">for</span><span style="color: #000000"> current session</span>
+</code></pre>
+				<blockquote>
+					<p>Ignore file stored in <code>$CONFIG_FILE.dst</code> with name <code>.wsignore</code></p>
+				</blockquote>
+				<a href="#link-target" id="link-target" style="color: inherit; text-decoration: none;">
+					<h2>link <code>[target]</code></h2>
+				</a>
+				<pre><code class="language-sh"><span style="color: #000000">    $ wost link </span><span style="color: #008000"># Link all files (exclude ignored) from source dir to shared dir</span>
+<span style="color: #000000">    $ wost link /path/ </span><span style="color: #008000"># Link target dir to shared repository</span>
+</code></pre>
+				<a href="#unlink-target" id="unlink-target" style="color: inherit; text-decoration: none;">
+					<h2>unlink <code>[target]</code></h2>
+				</a>
+				<pre><code class="language-sh"><span style="color: #000000">    $ wost unlink </span><span style="color: #008000"># Remove all files from shared dir</span>
+<span style="color: #000000">    $ wost unlink /path/to/dir </span><span style="color: #008000"># Remove target directory from shared directory</span>
+</code></pre>
+				<a href="#config-options" id="config-options" style="color: inherit; text-decoration: none;">
+					<h2>config <code>[OPTIONS]</code></h2>
+				</a>
+				<pre><code class="language-sh"><span style="color: #000000">  $ wost config </span><span style="color: #008000"># Print you config file in terminal</span>
+
+<span style="color: #000000">    Options:</span>
+
+<span style="color: #000000">      -s, --src &lt;target&gt; - Set </span><span style="color: #795E26">source</span><span style="color: #000000"> directory (where shored all you projects)</span>
+<span style="color: #000000">      -d, --dst &lt;target&gt; - Set shared directory (must be git repository)</span>
+<span style="color: #000000">      -b, --branch &lt;name&gt; - Set name of the branch with which the user will work</span>
+</code></pre>
+				<a href="#default-config" id="default-config" style="color: inherit; text-decoration: none;">
+					<h2>Default config</h2>
+				</a>
+				<blockquote>
+					<p>Config file stored in <code>$HOME/.config/wost/config.json</code></p>
+				</blockquote>
+				<pre><code class="language-json"><span style="color: #000000">{</span>
+<span style="color: #000000">    </span><span style="color: #0451A5">&quot;src&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;$HOME/Projects&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #0451A5">&quot;dst&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;$HOME/WorkStream&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #0451A5">&quot;branchName&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;$HOSTNAME&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #0451A5">&quot;exclude&quot;</span><span style="color: #000000">: [</span>
+<span style="color: #000000">        </span><span style="color: #A31515">&quot;.git&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #A31515">&quot;.gitignore&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #A31515">&quot;node_modules&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">        </span><span style="color: #A31515">&quot;.wsignore&quot;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    ]</span>
+<span style="color: #000000">}</span>
+</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class=" ">
-						<a href="modules.html">Modules</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/commands.html">commands</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/commands_link.html">commands/link</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/commands_sync.html">commands/sync</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/commands_unlink.html">commands/unlink</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/constants.html">constants</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/index.html">index</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/types.html">types</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils.html">utils</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_check_path.html">utils/check-<wbr>path</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_collect.html">utils/collect</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_get_config.html">utils/get-<wbr>config</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_get_id.html">utils/get-<wbr>id</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_get_ignore.html">utils/get-<wbr>ignore</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_log.html">utils/log</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_min_to_ms.html">utils/min-<wbr>to-<wbr>ms</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_mirror.html">utils/mirror</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_use_git.html">utils/use-<wbr>git</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/utils_walk.html">utils/walk</a>
+						<a href="modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-function">
+						<a href="modules.html#main" class="tsd-kind-icon">main</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -139,11 +140,6 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-			</ul>
 		</div>
 	</div>
 </footer>
