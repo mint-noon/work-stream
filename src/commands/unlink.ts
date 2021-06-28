@@ -11,7 +11,7 @@ import {
 
 const { dst }= getConfig();
 
-export const unlink = (target: string) => {
+export const unlink = (target: string): void => {
     const files = readdirSync(target);
 
     for (const file of files){
