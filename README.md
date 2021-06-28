@@ -32,7 +32,7 @@
 
     Options:
 
-      -s, --src <target> - Set source directory (where shored all you projects)
+      -s, --src <target> - Set source directory (where stored all you projects)
       -d, --dst <target> - Set shared directory (must be git repository)
       -b, --branch <name> - Set name of the branch with which the user will work
 ```
