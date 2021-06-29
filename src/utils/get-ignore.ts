@@ -1,4 +1,5 @@
 import {
+    ensureFileSync,
     existsSync,
     readFileSync,
     writeFileSync,
@@ -18,6 +19,7 @@ const getIgnore = (): string[] => {
     let ignore = exclude;
 
     if(!existsSync(ignorePath)) {
+        ensureFileSync(ignorePath);
         writeFileSync(ignorePath, exclude.join('\n'));
         warn(`Default ignore file created at: ${ignorePath}`);
     } else {
