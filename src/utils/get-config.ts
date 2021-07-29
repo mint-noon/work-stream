@@ -17,7 +17,7 @@ import {
 export const defaultConfig: Config = {
     src: join(HOME_DIR, 'Projects'),
     dst: join(HOME_DIR, 'WorkStream'),
-    workBranchName: HOSTNAME,
+    branch: HOSTNAME,
     exclude: [
         '.git',
         '.gitignore',

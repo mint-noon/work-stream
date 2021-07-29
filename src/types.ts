@@ -4,7 +4,7 @@ export type Config = {
     src: string;
     dst: string;
     exclude: string[];
-    workBranchName: string;
+    branch: string;
 }
 
 export type WatchOptions = {
