@@ -19,6 +19,7 @@ export const link = (src: string, dst: string, exclude: string[]): void => {
         const dstPath = path.replace(src, dst);
 
         if (!existsSync(dstPath)) {
+            log.info(`Linked: ${dstPath}`);
             ensureLinkSync(path, dstPath);
         }
     });

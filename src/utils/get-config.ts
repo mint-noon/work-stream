@@ -43,8 +43,11 @@ const configSchema: Schema = {
                 type: 'string',
             },
         },
+        branch: {
+            type: 'string',
+        }
     },
-    required: ['src', 'dst', 'exclude'],
+    required: ['src', 'dst', 'exclude', 'branch'],
 };
 
 const getConfig = (): Config => {
