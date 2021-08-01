@@ -49,7 +49,7 @@ $ npm i -g @mint-noon/wost
 {
     "src": "$HOME/Projects",
     "dst": "$HOME/WorkStream",
-    "branchName": "$HOSTNAME",
+    "branch": "$HOSTNAME",
     "exclude": [
         ".git",
         ".gitignore",
