@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, normalize } from 'path';
 import {
     existsSync,
     readJsonSync,
@@ -58,6 +58,9 @@ const getConfig = (): Config => {
     }
 
     const config = readJsonSync(CONFIG_FILE_PATH);
+
+    config.src = normalize(config.src);
+    config.dst = normalize(config.dst);
 
     if (validate(config, configSchema)) {
         return config;
