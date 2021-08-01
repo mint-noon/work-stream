@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="link" type="NodeJSConfigurationType" application-parameters="link" path-to-js-file="wost.js" working-dir="$PROJECT_DIR$/bin">
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="sync -w -d 5" type="NodeJSConfigurationType" application-parameters="sync -w -d 5" path-to-js-file="wost.js" working-dir="$PROJECT_DIR$/bin">
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
