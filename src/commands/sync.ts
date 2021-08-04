@@ -20,23 +20,20 @@ export const sync = ({
     watch = false,
     delay = 45,
 }: WatchOptions): void => {
-    const {commit, push} = useGit();
+    const {doSync} = useGit();
 
-    mirror(config.src, config.dst, ignore);
-    commit();
-    push();
+    function syncIteration() {
+        mirror(config.src, config.dst, ignore);
+        doSync();
+        log.info('Synced.');
+    }
 
     if (watch) {
         log.info('Watch...');
         delay = +delay * 1000;
 
-        setInterval(() => {
-            mirror(config.src, config.dst, ignore);
-            commit();
-            push();
-            log.info('Watch...');
-        }, delay);
-    }
+        setInterval(syncIteration, delay);
+    } else syncIteration();
 };
 
 export default new Command('sync')

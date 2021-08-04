@@ -8,8 +8,7 @@ import {
 const { dst, branch }= getConfig();
 
 export type UseGit = {
-    commit: () => void;
-    push: () => void;
+    doSync: () => void;
 }
 
 export default (): UseGit => {
@@ -33,19 +32,17 @@ export default (): UseGit => {
 
     exec('git merge -Xtheirs master');
 
-    const commit = () => {
+    const doSync = () => {
         exec(`git checkout ${branch}`);
         exec('git add --all');
         exec(`git commit -m ${getId()}`);
-    };
-
-    const push = () => {
+        exec('git push');
         exec('git checkout master');
         exec(`git merge -Xtheirs ${branch}`);
         exec('git push');
         exec(`git checkout ${branch}`);
     };
 
-    return { commit, push };
+    return { doSync };
 };
 
