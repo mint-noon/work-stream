@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
     "incremental": true,
     "target": "ES6",
     "module": "CommonJS",

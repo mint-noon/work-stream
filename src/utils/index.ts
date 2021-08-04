@@ -4,7 +4,7 @@ export { default as getConfig } from './get-config';
 export { default as getId } from './get-id';
 export { default as getIgnore } from './get-ignore';
 export { default as useGit } from './use-git';
-export { default as mirror } from './mirror';
+export * from './syncFolders';
 export { default as writeConfig } from './write-config';
 export * as log from './log';
 export { default as walk } from './walk';

@@ -1,10 +1,10 @@
 import { Command } from 'commander';
 import {
     log,
-    mirror,
+    syncFolders,
     useGit,
     getConfig,
-    getIgnore,
+    getIgnore, readFolder,
 } from '../utils';
 import type {WatchOptions} from '../types';
 
@@ -23,8 +23,12 @@ export const sync = ({
     const {doSync} = useGit();
 
     function syncIteration() {
-        mirror(config.src, config.dst, ignore);
+        const srcCollection = readFolder(config.src, ignore);
+        const dstCollection1 = readFolder(config.dst, ignore);
+        syncFolders(srcCollection, dstCollection1);
         doSync();
+        const dstCollection2 = readFolder(config.dst, ignore);
+        syncFolders(dstCollection2, srcCollection);
         log.info('Synced.');
     }
 
