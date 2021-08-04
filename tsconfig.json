@@ -13,12 +13,12 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "declaration": false,
-    "tsBuildInfoFile": "./",
+    "tsBuildInfoFile": "./lib/wostInfo.json",
     "removeComments": true,
     "strict": true,
     "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"],
+      "~/*": ["src/*"]
     },
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
