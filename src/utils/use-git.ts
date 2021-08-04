@@ -1,4 +1,4 @@
-import { cd, exec, which } from 'shelljs';
+import {cd, exec, ShellString, which} from 'shelljs';
 import {
     log,
     getId,
@@ -9,6 +9,21 @@ const { dst, branch }= getConfig();
 
 export type UseGit = {
     doSync: () => void;
+}
+
+const SILENT = {silent:true};
+const ignoredStrings = [
+    'up to date',
+    'Switched to branch',
+    'nothing to commit',
+    'Everything up-to-date',
+];
+
+function gitPrint(o:ShellString) {
+    const m = `${o.stdout} ${o.stderr}`.trim();
+    for(const ignoredString of ignoredStrings)
+        if(m.includes(ignoredString)) return;
+    console.log(m);
 }
 
 export default (): UseGit => {
@@ -33,14 +48,16 @@ export default (): UseGit => {
     exec('git merge -Xtheirs master');
 
     const doSync = () => {
-        exec(`git checkout ${branch}`);
-        exec('git add --all');
-        exec(`git commit -m ${getId()}`);
-        exec('git push');
-        exec('git checkout master');
-        exec(`git merge -Xtheirs ${branch}`);
-        exec('git push');
-        exec(`git checkout ${branch}`);
+        gitPrint(exec(`git checkout ${branch}`, SILENT));
+        gitPrint(exec('git pull --ff-only', SILENT));
+        gitPrint(exec('git add --all', SILENT));
+        gitPrint(exec(`git commit -m ${getId()}`, SILENT));
+        gitPrint(exec('git push', SILENT));
+        gitPrint(exec('git checkout master', SILENT));
+        gitPrint(exec('git pull --ff-only', SILENT));
+        gitPrint(exec(`git merge -Xtheirs ${branch}`, SILENT));
+        gitPrint(exec('git push', SILENT));
+        gitPrint(exec(`git checkout ${branch}`, SILENT));
     };
 
     return { doSync };

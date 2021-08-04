@@ -29,11 +29,11 @@ export const sync = ({
         doSync();
         const dstCollection2 = readFolder(config.dst, ignore);
         syncFolders(dstCollection2, srcCollection);
-        log.info('Synced.');
+        log.info('Synced');
     }
 
     if (watch) {
-        log.info('Watch...');
+        log.info('Watching.');
         delay = +delay * 1000;
 
         setInterval(syncIteration, delay);
