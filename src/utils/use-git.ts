@@ -19,12 +19,21 @@ const ignoredStrings = [
     'Everything up-to-date',
 ];
 
-function gitPrint(o:ShellString) {
-    const m = `${o.stdout} ${o.stderr}`.trim();
-    if(!m.length) return;
-    for(const ignoredString of ignoredStrings)
-        if(m.includes(ignoredString)) return;
-    console.log(m);
+function gitCommands(cmds:string[]) {
+    const results: string[] = [];
+    for(const cmd of cmds) {
+        const o = exec(cmd, SILENT);
+        const m = `${cmd}\n> ${(o.stdout +'\n'+o.stderr.split('\n').join('\n> '))}`.trim()+'\n';
+        results.push(m);
+    }
+
+    if(results.filter(m=> {
+        for(const ignoredString of ignoredStrings)
+            if(m.includes(ignoredString)) return false;
+        return true;
+    }).length > 0) {
+        console.log(results.join('\n'));
+    }
 }
 
 export default (): UseGit => {
@@ -52,16 +61,18 @@ export default (): UseGit => {
     exec('git merge master --ff-only');
 
     const doSync = () => {
-        gitPrint(exec(`git checkout ${branch}`, SILENT));
-        gitPrint(exec('git pull --ff-only', SILENT));
-        gitPrint(exec('git add --all', SILENT));
-        gitPrint(exec(`git commit -m ${getId()}`, SILENT));
-        gitPrint(exec('git push', SILENT));
-        gitPrint(exec('git checkout master', SILENT));
-        gitPrint(exec('git pull --ff-only', SILENT));
-        gitPrint(exec(`git merge ${branch} --ff-only`, SILENT));
-        gitPrint(exec('git push', SILENT));
-        gitPrint(exec(`git checkout ${branch}`, SILENT));
+        gitCommands([
+            `git checkout ${branch}`,
+            'git pull --ff-only',
+            'git add --all',
+            `git commit -m ${getId()}`,
+            'git push',
+            'git checkout master',
+            'git pull --ff-only',
+            `git merge ${branch} --ff-only`,
+            'git push',
+            `git checkout ${branch}`,
+        ]);
     };
 
     return { doSync };
