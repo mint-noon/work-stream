@@ -41,9 +41,12 @@ export default (): UseGit => {
     exec('git checkout master');
     exec('git pull --ff-only');
 
-    if(exec(`git checkout ${branch}`).code !== 0) {
-        exec(`git branch ${branch}`);
-        log.warn(`Create branch for this machine with name '${branch}'`);
+    if(exec(`git checkout ${branch}`).code !== 0 && exec(`git checkout origin/${branch}`).code !== 0) {
+        exec(`git checkout -b ${branch}`);
+        exec(`git push --set-upstream origin ${branch}`);
+        exec('git pull');
+        exec('git push');
+        log.warn(`Created a new branch for this machine with name: '${branch}'`);
     }
 
     exec('git merge master --ff-only');
