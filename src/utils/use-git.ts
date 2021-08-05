@@ -44,7 +44,7 @@ export default (): UseGit => {
     if(exec(`git checkout ${branch}`).code !== 0 && exec(`git checkout origin/${branch}`).code !== 0) {
         exec(`git checkout -b ${branch}`);
         exec(`git push --set-upstream origin ${branch}`);
-        exec('git pull');
+        exec('git pull --ff-only');
         exec('git push');
         log.warn(`Created a new branch for this machine with name: '${branch}'`);
     }
