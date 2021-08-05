@@ -21,6 +21,7 @@ const ignoredStrings = [
 
 function gitPrint(o:ShellString) {
     const m = `${o.stdout} ${o.stderr}`.trim();
+    if(!m.length) return;
     for(const ignoredString of ignoredStrings)
         if(m.includes(ignoredString)) return;
     console.log(m);
@@ -38,14 +39,14 @@ export default (): UseGit => {
     }
 
     exec('git checkout master');
-    exec('git pull --ff');
+    exec('git pull --ff-only');
 
     if(exec(`git checkout ${branch}`).code !== 0) {
         exec(`git branch ${branch}`);
         log.warn(`Create branch for this machine with name '${branch}'`);
     }
 
-    exec('git merge -Xtheirs master');
+    exec('git merge master --ff-only');
 
     const doSync = () => {
         gitPrint(exec(`git checkout ${branch}`, SILENT));
@@ -55,7 +56,7 @@ export default (): UseGit => {
         gitPrint(exec('git push', SILENT));
         gitPrint(exec('git checkout master', SILENT));
         gitPrint(exec('git pull --ff-only', SILENT));
-        gitPrint(exec(`git merge -Xtheirs ${branch}`, SILENT));
+        gitPrint(exec(`git merge ${branch} --ff-only`, SILENT));
         gitPrint(exec('git push', SILENT));
         gitPrint(exec(`git checkout ${branch}`, SILENT));
     };
