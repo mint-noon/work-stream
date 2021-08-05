@@ -21,18 +21,31 @@ const ignoredStrings = [
 
 function gitCommands(cmds:string[]) {
     const results: string[] = [];
+    let hasErrorOutputs = false;
     for(const cmd of cmds) {
         const o = exec(cmd, SILENT);
-        const m = `${cmd}\n> ${(o.stdout +'\n'+o.stderr.split('\n').join('\n> '))}`.trim()+'\n';
+        const o2 = `${o.stdout}\n${o.stderr}`.trim();
+
+        let errorOutput = !!o2.length;
+        if(o2.length) {
+            for(const ignoredString of ignoredStrings)
+                if(o2.includes(ignoredString)) {
+                    errorOutput = false;
+                    break;
+                }
+        }
+
+        hasErrorOutputs = hasErrorOutputs || errorOutput;
+
+        const errStr = errorOutput ? 'ERR' : 'OK ';
+        const m = `${cmd}\n${errStr} ${o2.split('\n').join(`\n${errStr} `)}`.trim()+'\n';
         results.push(m);
     }
 
-    if(results.filter(m=> {
-        for(const ignoredString of ignoredStrings)
-            if(m.includes(ignoredString)) return false;
-        return true;
-    }).length > 0) {
+    if(hasErrorOutputs) {
+        console.log('================== START ======================');
         console.log(results.join('\n'));
+        console.log('=================== END =======================\n');
     }
 }
 
@@ -61,17 +74,23 @@ export default (): UseGit => {
     exec('git merge master --ff-only');
 
     const doSync = () => {
+        // TODO Тут нужно реализовать такую логику:
+        //  1. Коммит и пуш локальных изменений в свою ветку - в любом случае
         gitCommands([
             `git checkout ${branch}`,
-            'git pull --ff-only',
+            'git pull -Xtheirs',
             'git add --all',
-            `git commit -m ${getId()}`,
+            `git commit -m "${(new Date()).toISOString()} ${branch}"`,
             'git push',
             'git checkout master',
-            'git pull --ff-only',
+            'git pull -Xtheirs',
             `git merge ${branch} --ff-only`,
+            //            `git commit -m "${(new Date()).toISOString()} merged from ${branch}"`,
             'git push',
             `git checkout ${branch}`,
+            'git merge master -Xtheirs',
+            `git commit -m "${(new Date()).toISOString()} merged from master"`,
+            'git push',
         ]);
     };
 
