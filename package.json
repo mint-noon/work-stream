@@ -1,6 +1,6 @@
 {
   "name": "@mint-noon/wost",
-  "version": "0.3.6",
+  "version": "0.3.8",
   "description": "CLI tool to sync your work files between machines and always have up-to-date content",
   "main": "src/index.ts",
   "bin": {
