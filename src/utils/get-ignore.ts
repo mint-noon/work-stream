@@ -23,8 +23,10 @@ const getIgnore = (): string[] => {
         writeFileSync(ignorePath, exclude.join('\n'));
         warn(`Default ignore file created at: ${ignorePath}`);
     } else {
-        ignore = readFileSync(ignorePath, 'utf-8').split('\n');
+        ignore = [...exclude, ...readFileSync(ignorePath, 'utf-8').split('\n')];
     }
+
+    ignore = [...new Set([...ignore.map(s=>s.trim())])]; // trim, because line endings might be different
 
     return ignore;
 };

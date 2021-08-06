@@ -1,10 +1,10 @@
 import { Command } from 'commander';
 import {
     log,
-    mirror,
+    syncFolders,
     useGit,
     getConfig,
-    getIgnore,
+    getIgnore, readFolder,
 } from '../utils';
 import type {WatchOptions} from '../types';
 
@@ -20,23 +20,24 @@ export const sync = ({
     watch = false,
     delay = 45,
 }: WatchOptions): void => {
-    const {commit, push} = useGit();
+    const {doSync} = useGit();
 
-    mirror(config.src, config.dst, ignore);
-    commit();
-    push();
+    function syncIteration() {
+        const srcCollection = readFolder(config.src, ignore);
+        const dstCollection1 = readFolder(config.dst, ignore);
+        syncFolders(srcCollection, dstCollection1);
+        doSync();
+        const dstCollection2 = readFolder(config.dst, ignore);
+        syncFolders(dstCollection2, srcCollection);
+        log.info('Synced');
+    }
 
     if (watch) {
-        log.info('Watch...');
+        log.info('Watching.');
         delay = +delay * 1000;
 
-        setInterval(() => {
-            mirror(config.src, config.dst, ignore);
-            commit();
-            push();
-            log.info('Watch...');
-        }, delay);
-    }
+        setInterval(syncIteration, delay);
+    } else syncIteration();
 };
 
 export default new Command('sync')

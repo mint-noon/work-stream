@@ -1,4 +1,4 @@
-import { cd, exec, which } from 'shelljs';
+import {cd, exec, ShellString, which} from 'shelljs';
 import {
     log,
     getId,
@@ -8,8 +8,45 @@ import {
 const { dst, branch }= getConfig();
 
 export type UseGit = {
-    commit: () => void;
-    push: () => void;
+    doSync: () => void;
+}
+
+const SILENT = {silent:true};
+const ignoredStrings = [
+    'up to date',
+    'Switched to branch',
+    'nothing to commit',
+    'Everything up-to-date',
+];
+
+function gitCommands(cmds:string[]) {
+    const results: string[] = [];
+    let hasErrorOutputs = false;
+    for(const cmd of cmds) {
+        const o = exec(cmd, SILENT);
+        const o2 = `${o.stdout}\n${o.stderr}`.trim();
+
+        let errorOutput = !!o2.length;
+        if(o2.length) {
+            for(const ignoredString of ignoredStrings)
+                if(o2.includes(ignoredString)) {
+                    errorOutput = false;
+                    break;
+                }
+        }
+
+        hasErrorOutputs = hasErrorOutputs || errorOutput;
+
+        const errStr = errorOutput ? 'ERR' : 'OK ';
+        const m = `${cmd}\n${errStr} ${o2.split('\n').join(`\n${errStr} `)}`.trim()+'\n';
+        results.push(m);
+    }
+
+    if(hasErrorOutputs) {
+        console.log('================== START ======================');
+        console.log(results.join('\n'));
+        console.log('=================== END =======================\n');
+    }
 }
 
 export default (): UseGit => {
@@ -24,28 +61,42 @@ export default (): UseGit => {
     }
 
     exec('git checkout master');
-    exec('git pull --ff');
+    exec('git pull --ff-only');
 
-    if(exec(`git checkout ${branch}`).code !== 0) {
-        exec(`git branch ${branch}`);
-        log.warn(`Create branch for this machine with name '${branch}'`);
+    if(exec(`git checkout ${branch}`).code !== 0 && exec(`git checkout origin/${branch}`).code !== 0) {
+        exec(`git checkout -b ${branch}`);
+        exec(`git push --set-upstream origin ${branch}`);
+        exec('git pull --ff-only');
+        exec('git push');
+        log.warn(`Created a new branch for this machine with name: '${branch}'`);
     }
 
-    exec('git merge -Xtheirs master');
+    exec('git merge master --ff-only');
 
-    const commit = () => {
-        exec(`git checkout ${branch}`);
-        exec('git add --all');
-        exec(`git commit -m ${getId()}`);
+    const doSync = () => {
+        // TODO Тут нужно реализовать такую логику:
+        // 1. При формировании commit message использовать max(дата изменения файлов), а не текущую дату как сейчас
+        //      это нужно чтобы защититься от сценария: на комп внес изменения, забыл запустить синхронизатор,
+        //      он был долго выключен, теперь я его включил и запустил синхронизатор
+        // 2. Когда есть два изменения - сделать сравнение сообщений последних коммитов веток. Выбрать ту ветку, у которой коммит позднее.
+        gitCommands([
+            `git checkout ${branch}`,
+            'git pull -Xtheirs',
+            'git add --all',
+            `git commit -m "${(new Date()).toISOString()} ${branch}"`,
+            'git push',
+            'git checkout master',
+            'git pull -Xtheirs',
+            `git merge ${branch} --ff-only`,
+            //            `git commit -m "${(new Date()).toISOString()} merged from ${branch}"`,
+            'git push',
+            `git checkout ${branch}`,
+            'git merge master -Xtheirs',
+            `git commit -m "${(new Date()).toISOString()} merged from master"`,
+            'git push',
+        ]);
     };
 
-    const push = () => {
-        exec('git checkout master');
-        exec(`git merge -Xtheirs ${branch}`);
-        exec('git push');
-        exec(`git checkout ${branch}`);
-    };
-
-    return { commit, push };
+    return { doSync };
 };
 
